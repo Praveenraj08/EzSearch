@@ -85,4 +85,4 @@ ENV/
 .spyderproject
 # to ignore protobuf auto generated classes
 *_pb2.py
-
+*.sh~
