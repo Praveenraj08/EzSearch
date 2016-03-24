@@ -1,11 +1,11 @@
 import time
 
-import helloworld_pb2
+import ezsearch_pb2
 
 _ONE_DAY_IN_SECONDS = 60 * 60 * 24
 
 
-class Greeter(helloworld_pb2.BetaGreeterServicer):
+class Greeter(ezsearch_pb2.BetaGreeterServicer):
   global db
   db={}
 
@@ -13,21 +13,21 @@ class Greeter(helloworld_pb2.BetaGreeterServicer):
     print "Server printing" , request.id , request.name
 
     db[request.id]=request.name
-    return helloworld_pb2.Response(message='Details added to server' )
+    return ezsearch_pb2.Response(message='Details added to server' )
 
   def Get(self,request,context):
     a=request.get_id
         
     if db.has_key(a):
       print "The is valid :)"
-      return helloworld_pb2.RespondDetails(get_id_result=a,name=db[a])
+      return ezsearch_pb2.RespondDetails(get_id_result=a,name=db[a])
     else:
       print "Sorry, The key doesn't exist :( "
-      return helloworld_pb2.RespondDetails(get_id_result="0",name="0")
+      return ezsearch_pb2.RespondDetails(get_id_result="0",name="0")
 
 
 def serve():
-  server = helloworld_pb2.beta_create_Greeter_server(Greeter())
+  server = ezsearch_pb2.beta_create_Greeter_server(Greeter())
   server.add_insecure_port('[::]:50051')
   server.start()
   try:

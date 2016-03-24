@@ -1,36 +1,29 @@
 from grpc.beta import implementations
-import sys
-import helloworld_pb2
+
+import ezsearch_pb2
 
 _TIMEOUT_SECONDS = 10
 
+class client_module(object):
+	def __init__(self,host,port):
 
-def f1(stub):
-  search_id=raw_input("Please enter the ID to be searched :")
-  response = stub.Get(helloworld_pb2.GetDetails(get_id=search_id), _TIMEOUT_SECONDS)
-  #print response
-  print "*******************Search Results are *************************** "
-  print "Key   :" ,response.get_id_result
-  print "Value :" ,response.name
-  print "******************************************************************"
-  ch=raw_input("Continue? y/n :")
-  if ch=='y':
-    run()
-  else:
-    sys.exit('Exiting client')
-def run():
-  channel = implementations.insecure_channel('localhost', 50051)
-  stub = helloworld_pb2.beta_create_Greeter_stub(channel)
-  ID=raw_input("Please enter your ID : ")
-  fname=raw_input("Please enter your Name : ")
+		self.channel = implementations.insecure_channel(host,int(port))
+		self.stub = ezsearch_pb2.beta_create_Greeter_stub(self.channel)
 
+	def f1(self,getkey):
 
-  response = stub.Put(helloworld_pb2.PutDetails(id=ID,name=fname), _TIMEOUT_SECONDS)
-  print "printing message from server"
-  print "Greeter client received: " + response.message
+		search_id=getkey
+		response =self.stub.Get(ezsearch_pb2.GetDetails(get_id=search_id), _TIMEOUT_SECONDS)
 
-  f1(stub)
- 
+		print "*******************Search Results are *************************** "
+		print "Key   :" ,response.get_id_result
+		print "Value :" ,response.name
+		print "******************************************************************"
+					 
+	def run(self,key,value):
+		ID=key 
+		fname=value
 
-if __name__ == '__main__':
-  run()
+		response = self.stub.Put(ezsearch_pb2.PutDetails(id=ID,name=fname), _TIMEOUT_SECONDS)
+		print "printing message from server"
+		print "Greeter client received: " + response.message
