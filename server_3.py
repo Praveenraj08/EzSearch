@@ -1,6 +1,6 @@
 import time
 import json
-
+import os
 import ezsearch_pb2
 
 _ONE_DAY_IN_SECONDS = 60 * 60 * 24
@@ -8,21 +8,25 @@ _ONE_DAY_IN_SECONDS = 60 * 60 * 24
 
 class Greeter(ezsearch_pb2.BetaGreeterServicer):
   # global db
-  # db={}
+  db={}
 
   def Put(self, request, context):
-    print "Server printing" , request.id , request.name
-    db=json.load(open('db_file.json','r'))
+    print "Server_3 printing" , request.id , request.name
+    if (os.stat('50053.json').st_size<=0):
+      json.dump(Greeter.db,open('50053.json','w'))
+
+    db=json.load(open('50053.json','r'))
+
    
     db[request.id]=request.name
     print db
 
-    json.dump(db,open('db_file.json','w'))
+    json.dump(db,open('50053.json','w'))
     return ezsearch_pb2.Response(message='Details added to server' )
 
   def Get(self,request,context):
     a=request.get_id
-    db=json.load(open('db_file.json','r'))
+    db=json.load(open('50053.json','r'))
     if db.has_key(a):
       print "The key is valid :)"
       return ezsearch_pb2.RespondDetails(get_id_result=a,name=db[a])
@@ -33,7 +37,7 @@ class Greeter(ezsearch_pb2.BetaGreeterServicer):
 
 def serve():
   server = ezsearch_pb2.beta_create_Greeter_server(Greeter())
-  server.add_insecure_port('[::]:50051')
+  server.add_insecure_port('[::]:50053')
   server.start()
   try:
     while True:

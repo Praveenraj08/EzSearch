@@ -88,3 +88,6 @@ ENV/
 # to ignore protobuf auto generated classes
 *_pb2.py
 *.sh~
+*.sh~
+*.txt
+*.json
