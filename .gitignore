@@ -90,4 +90,6 @@ ENV/
 *.sh~
 *.sh~
 *.txt
+*.txt~
 *.json
+*.json~
